@@ -1,0 +1,48 @@
+check_interval_s = 60 # 每次查询的时间间隔
+duration_s = 3600
+group_keys = [["a"],["b"],["c"]]
+show_keys = ["d","e","f"]
+time_key = ["time"]
+hi = true
+
+[es]
+address = [
+    "https://xxxxx",
+]
+username = "uuu"
+password = "pppp"
+index = "es index"
+
+size = 100
+
+range_time_name = "@timestamp"
+
+    [[es.term]]
+    key = "component.keyword"
+    values = ["aaa","bbb","ccc"]
+    [[es.term]]
+    key = "level.keyword"
+    values = ["error","ERROR"]
+
+[ding]
+enable = true
+
+url = "https://oapi.dingtalk.com/robot/send?access_token=xxxx"
+secret = "xxxxxx"
+
+[lark]
+enable = true
+
+url = "https://open.larksuite.com/open-apis/bot/v2/hook/xxxx"
+secret = "xxxxxxx"
+
+
+[rules.0_1]
+name = "eth pos"
+content = "chain = 'eth' & message > 'extraData should be 0x'"
+level = 0
+mutex = true
+start = 0
+end = 0
+duration = 1500
+times = 30
