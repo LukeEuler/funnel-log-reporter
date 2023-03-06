@@ -59,7 +59,7 @@ func NewProcessor() (*Processor, error) {
 	}
 
 	if conf.Hi {
-		_ = p.consumer.Send("启动", "blue", "Kill time, or kiss time", false)
+		_ = p.consumer.Send(conf.Custom.HiTitle, conf.Custom.HiColor, conf.Custom.HiContent, false)
 	}
 
 	return p, nil
@@ -124,7 +124,11 @@ func (p *Processor) work() {
 	if length == 0 {
 		if p.lastLogs == 0 {
 			if time.Since(p.lastWhisper) > 24*time.Hour {
-				err = p.consumer.Send("heartbeat", "wathet", "а зори здесь тихие. 🤫", false)
+				err = p.consumer.Send(
+					conf.Custom.HeartbeatTitle,
+					conf.Custom.HeartbeatTitleColor,
+					conf.Custom.HeartbeatTitleContent,
+					false)
 				if err != nil {
 					log.Entry.WithError(err).Error(err)
 				}
@@ -136,8 +140,8 @@ func (p *Processor) work() {
 		p.lastWhisper = time.Now()
 
 		err = p.consumer.Send(
-			"恢复",
-			"green",
+			conf.Custom.RecoverTitle,
+			conf.Custom.RecoverColor,
 			fmt.Sprintf("tips: %s", conf.GetBaseQueryTimeInfo()),
 			false)
 		if err != nil {
@@ -168,7 +172,7 @@ func (p *Processor) work() {
 	if !ok {
 		return
 	}
-	err = p.consumer.Send(title, "red", content, true)
+	err = p.consumer.Send(title, conf.Custom.AlertColor, content, true)
 	if err != nil {
 		log.Entry.WithError(err).Error(err)
 		return

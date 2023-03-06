@@ -29,7 +29,18 @@ type Config struct {
 	ShowKeys      []string   `toml:"show_keys"`
 	TimeKey       []string   `toml:"time_key"`
 	Hi            bool       `toml:"hi"`
-	Es            struct {
+	Custom        struct {
+		HiTitle               string `toml:"hi_title"`
+		HiColor               string `toml:"hi_color"`
+		HiContent             string `toml:"hi_content"`
+		HeartbeatTitle        string `toml:"heartbeat_title"`
+		HeartbeatTitleColor   string `toml:"heartbeat_title_color"`
+		HeartbeatTitleContent string `toml:"heartbeat_title_content"`
+		AlertColor            string `toml:"alert_color"`
+		RecoverTitle          string `toml:"recover_title"`
+		RecoverColor          string `toml:"recover_color"`
+	} `toml:"custom"`
+	Es struct {
 		Address       []string `toml:"address"`
 		Username      string   `toml:"username"`
 		Password      string   `toml:"password"`

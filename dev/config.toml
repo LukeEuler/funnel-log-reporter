@@ -5,6 +5,21 @@ show_keys = ["d","e","f"]
 time_key = ["time"]
 hi = true
 
+[custom]
+# 各种定制化用词
+hi_title = "启动"
+hi_color = "blue"
+hi_content = "kill time, or kiss time"
+
+heartbeat_title = "心跳"
+heartbeat_title_color = "wathet"
+heartbeat_title_content = "а зори здесь тихие. 🤫"
+
+alert_color = "red"
+
+recover_title = "恢复"
+recover_color = "green"
+
 [es]
 address = [
     "https://xxxxx",
