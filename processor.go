@@ -80,17 +80,17 @@ func (p *Processor) Loop(shutdown chan struct{}) {
 
 func (p *Processor) work() {
 	conf := config.Conf
-	endTime := time.Now().Unix()
-	beginTime := endTime - conf.Duration
+	endTime := time.Now().UnixMilli()
+	beginTime := endTime - conf.Duration*1000
 
 	// 增量更新数据, 减少es数据查询量
 	esBeginTime := beginTime
 	lastEndTime := lastValidEndTime(p.lastMessages, conf.Es.RangeTimeName)
-	if esBeginTime < lastEndTime {
-		esBeginTime = lastEndTime
+	if esBeginTime <= lastEndTime {
+		esBeginTime = lastEndTime + 1
 	}
 
-	newData, err := p.producer.GetMessageByRange(esBeginTime*1000, endTime*1000, conf.ToEsConfig())
+	newData, err := p.producer.GetMessageByRange(esBeginTime, endTime, conf.ToEsConfig())
 	if err != nil {
 		log.Entry.WithError(err).Error(err)
 		return
@@ -296,11 +296,11 @@ func lastValidEndTime(lastMessages []json.RawMessage, timeKey string) int64 {
 	message := lastMessages[len(lastMessages)-1]
 	value := gjson.GetBytes(message, timeKey)
 	var t time.Time
-	t, err := time.Parse(time.RFC3339, value.String())
+	t, err := time.Parse(time.RFC3339Nano, value.String())
 	if err != nil {
 		return 0
 	}
-	return t.Unix()
+	return t.UnixMilli()
 }
 
 func lastValidMsg(lastMessages []json.RawMessage, timeKey string, begin int64) ([]json.RawMessage, error) {
@@ -312,11 +312,11 @@ func lastValidMsg(lastMessages []json.RawMessage, timeKey string, begin int64) (
 	for i, message := range lastMessages {
 		value := gjson.GetBytes(message, timeKey)
 		var t time.Time
-		t, err := time.Parse(time.RFC3339, value.String())
+		t, err := time.Parse(time.RFC3339Nano, value.String())
 		if err != nil {
 			return nil, errors.Errorf("can not parse %s as time", value)
 		}
-		if t.Unix() >= begin {
+		if t.UnixMilli() >= begin {
 			idx = i
 			break
 		}
