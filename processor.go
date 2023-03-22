@@ -305,7 +305,7 @@ func lastValidEndTime(lastMessages []json.RawMessage, timeKey string) int64 {
 
 func lastValidMsg(lastMessages []json.RawMessage, timeKey string, begin int64) ([]json.RawMessage, error) {
 	if len(lastMessages) == 0 {
-		return nil, errors.New("last query data is empty")
+		return []json.RawMessage{}, nil
 	}
 
 	idx := -1
