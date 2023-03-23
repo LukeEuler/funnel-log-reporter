@@ -120,7 +120,14 @@ func (p *Processor) work() {
 		return
 	}
 
-	length := len(events)
+	validEvents := make([]model.Event, 0, len(events))
+	for _, item := range events {
+		if item.Valid() {
+			validEvents = append(validEvents, item)
+		}
+	}
+
+	length := len(validEvents)
 	if length == 0 {
 		if p.lastLogs == 0 {
 			if time.Since(p.lastWhisper) > 24*time.Hour {
@@ -150,14 +157,14 @@ func (p *Processor) work() {
 		return
 	}
 
-	log.Entry.Warnf("%d needs report", len(events))
+	log.Entry.Warnf("%d needs report", len(validEvents))
 	duration := time.Duration(conf.Duration) * time.Second
 	interval := time.Duration(conf.CheckInterval) * time.Second
 	title := fmt.Sprintf("错误: %d/%d(有效/总数) in %s. interval %s",
-		len(events), len(message), duration.String(), interval.String())
+		len(validEvents), len(message), duration.String(), interval.String())
 
 	change := false
-	for _, item := range events {
+	for _, item := range validEvents {
 		if item.GetTime() > p.lastEventTime {
 			p.lastEventTime = item.GetTime()
 			change = true
@@ -168,7 +175,7 @@ func (p *Processor) work() {
 		return
 	}
 
-	content, ok := p.groupLogs(events, conf.GroupKeys, conf.ShowKeys)
+	content, ok := p.groupLogs(validEvents, conf.GroupKeys, conf.ShowKeys)
 	if !ok {
 		return
 	}
