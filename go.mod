@@ -1,10 +1,10 @@
 module github.com/LukeEuler/funnel-log-reporter
 
-go 1.18
+go 1.19
 
 require (
 	github.com/BurntSushi/toml v1.2.1
-	github.com/LukeEuler/funnel v0.0.6
+	github.com/LukeEuler/funnel v0.0.7
 	github.com/antonfisher/nested-logrus-formatter v1.3.1
 	github.com/elastic/go-elasticsearch/v7 v7.17.7
 	github.com/pkg/errors v0.9.1
