@@ -30,7 +30,7 @@ func main() {
 
 func doLoopJobs(jobs ...func(chan struct{})) {
 	shutdown := make(chan struct{})
-	signals := make(chan os.Signal)
+	signals := make(chan os.Signal, 1)
 
 	signal.Notify(signals, os.Interrupt, syscall.SIGTERM)
 	go func() {

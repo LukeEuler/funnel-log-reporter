@@ -7,7 +7,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strconv"
 	"time"
@@ -75,7 +75,7 @@ func (l *lark) Send(title, color, content string) error {
 	}
 	defer resp.Body.Close()
 
-	result, _ := ioutil.ReadAll(resp.Body)
+	result, _ := io.ReadAll(resp.Body)
 	fmt.Println(string(result))
 	return nil
 }
