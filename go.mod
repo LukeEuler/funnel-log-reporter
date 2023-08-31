@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/BurntSushi/toml v1.2.1
-	github.com/LukeEuler/funnel v0.0.8
+	github.com/LukeEuler/funnel v0.0.9
 	github.com/antonfisher/nested-logrus-formatter v1.3.1
 	github.com/elastic/go-elasticsearch/v7 v7.17.7
 	github.com/pkg/errors v0.9.1
