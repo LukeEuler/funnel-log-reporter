@@ -1,6 +1,8 @@
 module github.com/LukeEuler/funnel-log-reporter
 
-go 1.20
+go 1.21
+
+toolchain go1.21.8
 
 require (
 	github.com/BurntSushi/toml v1.2.1
